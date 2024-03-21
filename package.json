@@ -12,8 +12,6 @@
   "dependencies": {
     "@logtail/node": "^0.4.21",
     "@logtail/winston": "^0.4.21",
-    "cloudinary": "^2.0.3",
-    "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "ejs": "^3.1.9",
     "exceljs": "^4.4.0",

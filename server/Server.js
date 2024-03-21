@@ -1,6 +1,5 @@
 "use strict";
 const express = require("express");
-const cors = require("cors");
 const Logger = require("../utils/Logger");
 const os = require("os");
 const { exec } = require('child_process');
@@ -36,18 +35,6 @@ class Server {
 
         this.#app = express();
         this.#app.use(express.json());
-
-        this.#app.set("trust proxy", true);
-
-        this.#app.use(cors({
-            origin: "*",
-            methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-            allowedHeaders: "Content-Type, Authorization, source, auth_mode",
-            credentials: true,
-            optionsSuccessStatus: 200
-        }));
-
-        this.#app.use(this.#checkRateLimit);
     }
 
     #checkRateLimit = (req, res, next) => {
