@@ -28,15 +28,14 @@
 
         /* Report Body */
         .report {
-            background-color: #e0f2e9; /* Light green background */
-            padding: 20px;
-            border-radius: 5px;
+            margin-bottom: 20px;
         }
 
         /* Table */
         table {
             width: 100%;
             border-collapse: collapse;
+            margin-bottom: 20px;
         }
 
         th, td {
@@ -64,32 +63,34 @@
             <h1>Weekly Maintenance Report</h1>
         </div>
         
-        <div class="report">
-            <table>
-                <tr>
-                    <th>Webmail</th>
-                    <th>Image</th>
-                    <th>Room</th>
-                    <th>Time Available</th>
-                    <th>Date Complaint Made</th>
-                    <th>Is Resolved</th>
-                    <th>Maintenance Issue</th>
-                    <th>Maintenance Issue Category</th>
-                </tr>
-                <% issues.forEach(issue => { %>
+        <% for (const hallName of Object.keys(hostelGroups)) { %>
+            <div class="report">
+                <h2><%= hallName %> Maintenance Issues</h2>
+                <table>
                     <tr>
-                        <td><%= issue.Webmail %></td>
-                        <td><%= issue.ImageURL %></td>
-                        <td><%= issue.Hostel %></td>
-                        <td><%= issue.TimeAvailable %></td>
-                        <td><%= issue.DateComplaintMade %></td>
-                        <td><%= issue.IsResolved ? 'Yes' : 'No' %></td>
-                        <td><%= issue.MaintenanceIssue %></td>
-                        <td><%= issue.MaintenanceIssueCategory %></td>
+                        <th>Webmail</th>
+                        <th>Room</th>
+                        <th>Time Available</th>
+                        <th>Date Complaint Made</th>
+                        <th>Is Resolved</th>
+                        <th>Maintenance Issue</th>
+                        <th>Maintenance Issue Category</th>
                     </tr>
-                <% }); %>
-            </table>
-        </div>
+                    <% const issues = hostelGroups[hallName]; %>
+                    <% issues.forEach(issue => { %>
+                        <tr>
+                            <td><%= issue.Webmail %></td>
+                            <td><%= issue.Room %></td>
+                            <td><%= issue.TimeAvailable %></td>
+                            <td><%= issue.DateComplaintMade %></td>
+                            <td><%= issue.IsResolved ? 'Yes' : 'No' %></td>
+                            <td><%= issue.MaintenanceIssue %></td>
+                            <td><%= issue.MaintenanceIssueCategory %></td>
+                        </tr>
+                    <% }); %>
+                </table>
+            </div>
+        <% } %>
         
         <div class="footer">
             <p>Find attached below maintenance Issues.</p>

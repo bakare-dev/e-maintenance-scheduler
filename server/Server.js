@@ -27,7 +27,7 @@ class Server {
         this.#buildRoutes();
         this.#logger = new Logger().getLogger();
         this.#ipRequestCount = new Map();
-        this.#schedulerService = new SchedulerService().start();
+        this.#schedulerService = new SchedulerService().runTask();
 
         instance = this;
     }

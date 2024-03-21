@@ -28,7 +28,7 @@ class SchedulerService {
     start = async () => {
         try {
             cron.schedule('59 23 * * 6', async () => {
-                await this.#runTask();
+                await this.runTask();
             }, {
                 timezone: 'Africa/Lagos'
             });
@@ -39,24 +39,31 @@ class SchedulerService {
         }
     }
 
-    #runTask = async () => {
+    runTask = async () => {
         try {
-            const issues = await this.#getWeeklyIssues();
+            const hostelGroups = await this.#getWeeklyIssues();
+            const attachments = [];
 
-            const response = await this.#convertDataToExcel(issues);
+            for (const hostel of Object.keys(hostelGroups)) {
+                const issues = hostelGroups[hostel];
+                const response = await this.#convertDataToExcel(issues, hostel);
+                const excelContent = fs.readFileSync(response.filePath);
 
-            const excelContent = fs.readFileSync(response.filePath);
+                const attachment = {
+                    filename: `${hostel} Weekly Maintenance Report`,
+                    content: excelContent,
+                    contentType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' 
+                };
+
+                attachments.push(attachment);
+            }
 
             let reportNotification = {
                 recipients: ["bakarepraise3@gmail.com", "bakare.praise@lmu.edu.ng"],
                 data: {
-                    issues: issues
+                    hostelGroups: hostelGroups
                 },
-                attachments: {
-                    filename: `Weekly Maintenance Report`,
-                    content: excelContent,
-                    contentType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'            
-                },
+                attachments: attachments,
             };
 
             this.#notificationService.sendMaintenanceReport(reportNotification, async resp => {
@@ -73,35 +80,40 @@ class SchedulerService {
 
     #getWeeklyIssues = async () => {
         try {
-            const date = this.#formatDate();
+            const date = "2024-03-28";
             const problems = await this.#maintenanceProblemIssueService.getWeeklyIssues(date);
 
-            const issuesPromises = problems.map(async (problem) => {
-                return {
+            const hostelGroups = {};
+
+            problems.forEach(problem => {
+                const hostel = problem.MaintenanceProblem.Hostel;
+                if (!hostelGroups[hostel]) {
+                    hostelGroups[hostel] = [];
+                }
+
+                hostelGroups[hostel].push({
                     Webmail: problem.MaintenanceProblem.WebMail,
-                    ImageURL: problem.MaintenanceProblem.ImageURL,
                     Room: `${problem.MaintenanceProblem.Hostel} ${problem.MaintenanceProblem.Block} ${problem.MaintenanceProblem.RoomNumber}`,
                     TimeAvailable: this.#getDateStringAndTime(problem.MaintenanceProblem.TimeAvailable),
                     DateComplaintMade: new Date(problem.MaintenanceProblem.DateComplaintMade).toDateString(),
                     IsResolved: problem.MaintenanceProblem.IsResolved ? 'Yes' : 'No',
                     MaintenanceIssue: problem.MaintenanceIssue.Description,
                     MaintenanceIssueCategory: problem.MaintenanceIssue.MaintenanceIssueCategory.Name
-                };
+                });
             });
 
-            const issues = await Promise.all(issuesPromises);
-            return issues;
+            return hostelGroups;
         } catch (err) {
             this.#logger.error(err);
             throw new Error(err.message);
         }
     }
 
-    #convertDataToExcel = async (data) => {
+    #convertDataToExcel = async (data, hall) => {
         try {
             const date = new Date();
             const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
-            const filePath = path.join(__dirname, `../reports/report_${formattedDate}.xlsx`);
+            const filePath = path.join(__dirname, `../reports/${hall}_report_${formattedDate}.xlsx`);
             
             const workbook = new ExcelJS.Workbook();
             const worksheet = workbook.addWorksheet('Reports');
@@ -116,7 +128,7 @@ class SchedulerService {
 
             await workbook.xlsx.writeFile(filePath);
         
-            this.#logger.info(`Data converted to excel successfully: report_${formattedDate}.xlsx` );
+            this.#logger.info(`Data converted to excel successfully: ${hall}_report_${formattedDate}.xlsx` );
 
             return {filePath, formattedDate};
         } catch (err) {
