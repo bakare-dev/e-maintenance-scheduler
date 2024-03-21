@@ -41,10 +41,5 @@ module.exports = {
       user: process.env.SMTP_USN,
       password: process.env.SMTP_PASSWORD,
     },
-    cloudinary: {
-      apiKey: process.env.CLOUDINARY_API_KEY,
-      apiSecret: process.env.CLOUDINARY_API_SECRET,
-      cloudName: process.env.CLOUDINARY_CLOUD_NAME,
-    },
   },
 };

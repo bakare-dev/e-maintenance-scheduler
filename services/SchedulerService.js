@@ -28,7 +28,7 @@ class SchedulerService {
     start = async () => {
         try {
             cron.schedule('59 23 * * 6', async () => {
-                await this.runTask();
+                await this.#runTask();
             }, {
                 timezone: 'Africa/Lagos'
             });
@@ -39,7 +39,7 @@ class SchedulerService {
         }
     }
 
-    runTask = async () => {
+    #runTask = async () => {
         try {
             const hostelGroups = await this.#getWeeklyIssues();
             const attachments = [];
@@ -59,7 +59,7 @@ class SchedulerService {
             }
 
             let reportNotification = {
-                recipients: ["bakarepraise3@gmail.com", "bakare.praise@lmu.edu.ng"],
+                recipients: ["vcmlusc@lmu.edu.ng", "obueh.destiny@lmu.edu.ng"],
                 data: {
                     hostelGroups: hostelGroups
                 },
@@ -80,7 +80,7 @@ class SchedulerService {
 
     #getWeeklyIssues = async () => {
         try {
-            const date = "2024-03-28";
+            const date = this.#formatDate();
             const problems = await this.#maintenanceProblemIssueService.getWeeklyIssues(date);
 
             return this.#groupByHostel(problems);
