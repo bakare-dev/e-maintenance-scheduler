@@ -83,30 +83,30 @@ class SchedulerService {
             const date = "2024-03-28";
             const problems = await this.#maintenanceProblemIssueService.getWeeklyIssues(date);
 
-            const hostelGroups = {};
-
-            problems.forEach(problem => {
-                const hostel = problem.MaintenanceProblem.Hostel;
-                if (!hostelGroups[hostel]) {
-                    hostelGroups[hostel] = [];
-                }
-
-                hostelGroups[hostel].push({
-                    Webmail: problem.MaintenanceProblem.WebMail,
-                    Room: `${problem.MaintenanceProblem.Hostel} ${problem.MaintenanceProblem.Block} ${problem.MaintenanceProblem.RoomNumber}`,
-                    TimeAvailable: this.#getDateStringAndTime(problem.MaintenanceProblem.TimeAvailable),
-                    DateComplaintMade: new Date(problem.MaintenanceProblem.DateComplaintMade).toDateString(),
-                    IsResolved: problem.MaintenanceProblem.IsResolved ? 'Yes' : 'No',
-                    MaintenanceIssue: problem.MaintenanceIssue.Description,
-                    MaintenanceIssueCategory: problem.MaintenanceIssue.MaintenanceIssueCategory.Name
-                });
-            });
-
-            return hostelGroups;
+            return this.#groupByHostel(problems);
         } catch (err) {
             this.#logger.error(err);
             throw new Error(err.message);
         }
+    }
+
+    #groupByHostel = (array) => {
+        return array.reduce((acc, problem) => {
+            const hostel = problem.Hostel;
+            if (!acc[hostel]) {
+              acc[hostel] = [];
+            }
+            acc[hostel].push({
+              Webmail: problem.WebMail,
+              Room: `${problem.Hostel} ${problem.Block} ${problem.RoomNumber}`,
+              TimeAvailable: this.#getDateStringAndTime(problem.TimeAvailable),
+              DateComplaintMade: new Date(problem.DateComplaintMade).toDateString(),
+              IsResolved: problem.IsResolved ? 'Yes' : 'No',
+              MaintenanceIssue: problem.Description,
+              MaintenanceIssueCategory: problem.CategoryName
+            });
+            return acc;
+        }, {});
     }
 
     #convertDataToExcel = async (data, hall) => {

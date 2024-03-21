@@ -13,6 +13,7 @@ MaintenanceProblemIssue.init({
     
 }, {
     sequelize: dbEngine.getConnectionManager(),
+    modelName: 'MaintenanceProblemIssue',
     timestamps: false
 });
 
