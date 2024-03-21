@@ -5,6 +5,7 @@ const MaintenanceProblemIssueService = require("./dataservices/MaintenanceProble
 const fs = require("fs");
 const path = require("path");
 const ExcelJS = require("exceljs");
+const { infrastructure } = require("../config/main.settings");
 
 let instance;
 
@@ -59,7 +60,7 @@ class SchedulerService {
             }
 
             let reportNotification = {
-                recipients: ["vcmlusc@lmu.edu.ng", "obueh.destiny@lmu.edu.ng"],
+                recipients: [infrastructure.recievers.admin, infrastructure.recievers.support],
                 data: {
                     hostelGroups: hostelGroups
                 },

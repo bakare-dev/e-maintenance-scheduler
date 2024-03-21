@@ -41,5 +41,9 @@ module.exports = {
       user: process.env.SMTP_USN,
       password: process.env.SMTP_PASSWORD,
     },
+    recievers: {
+      admin: process.env.ADMIN_EMAIL,
+      support: process.env.SUPPORT_EMAIL,
+    }
   },
 };
