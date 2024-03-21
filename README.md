@@ -1,3 +1,4 @@
+```markdown
 # E-Maintenance Scheduler
 
 ## Overview
@@ -42,6 +43,8 @@ The E-Maintenance Scheduler is a background service built to automate the genera
     SMTP_PORT=
     SMTP_USN=
     SMTP_PASSWORD=
+    ADMIN_EMAIL=
+    SUPPORT_EMAIL=
    ```
 4. **Run the Service**: Start the service by running the following command.
    ```bash
@@ -54,4 +57,29 @@ If you would like to contribute to this project, please follow these guidelines:
 - Fork the repository and create a new branch for your feature or bug fix.
 - Ensure your code adheres to the project's coding style and guidelines.
 - Test your changes thoroughly before submitting a pull request.
-- Provide detailed information about the changes in the pull request description.
+- Provide detailed information about the changes in the pull request description. 
+
+## Initial Setup Instructions for Development Environment
+- On the first run, go to `main.js` and comment out:
+  ```javascript
+  let server = new Server(config.server.port);
+  server.start();
+  ```
+  and uncomment:
+  ```javascript
+  let db = new DatabaseEngine();
+  db.connect(async() => {
+    let server = new Server(config.server.port);
+    server.start();
+  });
+  ```
+- Go to `config/main.settings.js`, update `infrastructure.timezone` to your timezone.
+- Run `npm start`. After the app starts, shut it down.
+- Go back to `main.js` and revert the changes.
+- Run `npm start`.
+
+- In the development environment, use `npm run dev`.
+```
+
+## Issue Tracker
+If you encounter any issues or have suggestions for improvements, please raise them [here](https://github.com/bakare-dev/e-maintenance-scheduler/issues/new/choose). We're open to learning and improving!
