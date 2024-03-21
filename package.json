@@ -1,0 +1,27 @@
+{
+  "name": "e-maintenance-scheduler",
+  "version": "1.0.0",
+  "description": "E-maintenance Report Scheduler",
+  "main": "main.js",
+  "scripts": {
+    "dev": "nodemon main.js",
+    "start": "node main.js"
+  },
+  "author": "Bakare Praise",
+  "license": "ISC",
+  "dependencies": {
+    "@logtail/node": "^0.4.21",
+    "@logtail/winston": "^0.4.21",
+    "cloudinary": "^2.0.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "ejs": "^3.1.9",
+    "exceljs": "^4.4.0",
+    "express": "^4.19.1",
+    "mysql2": "^3.9.2",
+    "node-cron": "^3.0.3",
+    "nodemailer": "^6.9.13",
+    "sequelize": "^6.37.1",
+    "winston": "^3.12.0"
+  }
+}
