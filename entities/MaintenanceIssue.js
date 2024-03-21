@@ -10,7 +10,7 @@ class MaintenanceIssue extends Model{};
 
 MaintenanceIssue.init({
     Description: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT('long'),
         allowNull: false,
     },
 }, {

@@ -10,19 +10,19 @@ class MaintenanceProblem extends Model{};
 
 MaintenanceProblem.init({
     WebMail: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT('long'),
         allowNull: false
     },
     ImageURL: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT('long'),
         allowNull: true
     },
     Block: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT('long'),
         allowNull: false
     },
     Hostel: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT('long'),
         allowNull: false
     },
     RoomNumber: {

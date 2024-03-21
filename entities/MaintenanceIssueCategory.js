@@ -9,7 +9,7 @@ class MaintenanceIssueCategory extends Model{};
 
 MaintenanceIssueCategory.init({
     Name: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT('long'),
         allowNull: false,
     },
 }, {
