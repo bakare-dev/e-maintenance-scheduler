@@ -34,7 +34,7 @@ class MaintenanceProblemIssueService extends Service {
                 mp.TimeAvailable, mp.DateComplaintMade, mp.IsResolved, 
                 mi.id AS mi_id, mi.Description, mi.MaintenanceIssueCategoryId, 
                 mic.id AS mic_id, mic.Name AS CategoryName
-                FROM MaintenanceProblemIssue AS mpi
+                FROM MaintenanceProblemIssues AS mpi
                 INNER JOIN MaintenanceProblems AS mp ON mpi.MaintenanceProblemId = mp.id 
                     AND mp.DateComplaintMade BETWEEN :startDate AND :endDate
                 LEFT OUTER JOIN MaintenanceIssues AS mi ON mpi.MaintenanceIssueId = mi.id
