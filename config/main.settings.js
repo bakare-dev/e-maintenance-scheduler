@@ -2,7 +2,6 @@ require("dotenv").config();
 module.exports = {
   server: {
     port: process.env.PORT,
-    mode: process.env.MODE
   },
   database: {
     development: {
@@ -13,24 +12,11 @@ module.exports = {
       dialect: "mysql",
       logging: false,
     },
-    test: {
-      database: process.env.TEST_DB,
-      username: process.env.TEST_USER,
-      password: process.env.TEST_PASSWORD,
-      host: process.env.TEST_HOST,
-      dialect: "postgres",
-      logging: false,
-    },
+    test: {},
     production: {},
   },
   infrastructure: {
-    dateFormat: "YYYY-MM-DD hh:mm:ss",
     timezone: "Africa/Lagos",
-    baseUrl: {
-      production: "",
-      development: "localhost",
-      test: "",
-    },
     winston: {
       server: process.env.WINSTONSOURCESERVER,
       sourceToken: process.env.WINSTONSOURCETOKEN,
