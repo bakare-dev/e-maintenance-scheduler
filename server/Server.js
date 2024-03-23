@@ -101,7 +101,7 @@ class Server {
 
         this.#app.get("/", (req, res) => {
             const message = {
-                info: "You have reached fd-server",
+                info: "You have reached e-maintenance-scheduler",
                 baseUrl: "/api/v1/",
                 health: "/api/v1/health",
                 docs: "/swagger",
