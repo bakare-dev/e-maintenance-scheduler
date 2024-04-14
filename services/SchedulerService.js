@@ -99,12 +99,11 @@ class SchedulerService {
             }
             acc[hostel].push({
               Webmail: problem.WebMail,
-              Room: `${problem.Hostel} ${problem.Block} ${problem.RoomNumber}`,
+              Hostel: problem.Hostel,
+              Room: `${problem.Block} ${problem.RoomNumber}`,
               TimeAvailable: this.#getDateStringAndTime(problem.TimeAvailable),
               DateComplaintMade: new Date(problem.DateComplaintMade).toDateString(),
-              IsResolved: problem.IsResolved ? 'Yes' : 'No',
               MaintenanceIssue: problem.Description,
-              MaintenanceIssueCategory: problem.CategoryName
             });
             return acc;
         }, {});
